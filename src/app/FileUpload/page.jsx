@@ -60,8 +60,12 @@ const FileUpload = () => {
   };
 
   return (
+    
+    
+
+    <div className="background-yellow-200 min-h-screen flex items-center justify-center">
     <div style={styles.container}>
-      <h2>🍳 AI Recipe Generator</h2>
+      <h2 className="title text-3xl text-gray-800 ">🍳 AI Recipe Generator</h2>
 
       {/* File upload section */}
       <input type="file" onChange={handleFileChange} />
@@ -72,14 +76,14 @@ const FileUpload = () => {
 
       {/* Gemini recipe generator */}
       <textarea
-        placeholder="Enter ingredients separated by commas (e.g. chicken, garlic, onion)"
+        placeholder="Enter ingredients separated by commas (e.g. avocado,tomato,cheese)"
         value={ingredients}
         onChange={(e) => setIngredients(e.target.value)}
         rows={3}
         style={{ width: "100%" }}
       />
 
-      <button onClick={handleGenerateRecipe} disabled={loading}>
+      <button className="rounded-lg bg-black text-amber-100" onClick={handleGenerateRecipe} disabled={loading}>
         {loading ? "Generating..." : "Generate Recipe"}
       </button>
 
@@ -91,6 +95,7 @@ const FileUpload = () => {
           </pre>
         </div>
       )}
+    </div>
     </div>
   );
 };
