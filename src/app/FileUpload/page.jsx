@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
@@ -90,8 +91,9 @@ const FileUpload = () => {
       {recipe && (
         <div style={{ marginTop: 20 }}>
           <h3>Generated Recipe:</h3>
+           <MarkdownPreview source={recipe} style={{ padding: 16 }} />
           <pre style={{ textAlign: "left", whiteSpace: "pre-wrap" }}>
-            {recipe}
+            
           </pre>
         </div>
       )}
