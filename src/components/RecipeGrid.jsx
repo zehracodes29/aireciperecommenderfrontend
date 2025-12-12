@@ -31,7 +31,7 @@ export default function RecipeGrid({ recipes = [], loading = false, onOpen, onSa
       ))}
 
       {(!loading && recipes.length === 0) && (
-        <div className="col-span-full p-8 bg-white rounded-xl text-center text-slate-600">
+        <div className="col-span-full p-8 bg-white rounded-xl text-center text-blue-600">
           No recipes yet — try the prompt above or use an example.
         </div>
       )}

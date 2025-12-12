@@ -24,13 +24,12 @@ export default function Home() {
     if (!prompt || !prompt.trim()) return;
     setLastPrompt(prompt);
 
-    // Abort any in-flight request
     if (controllerRef.current) controllerRef.current.abort();
     const controller = new AbortController();
     controllerRef.current = controller;
 
     setLoading(true);
-    setRecipes([]); // show skeletons
+    setRecipes([]); // show skeletons / indicate loading
 
     try {
       const resp = await fetch('/api/generate', {
@@ -49,11 +48,9 @@ export default function Home() {
       setRecipes(data.recipes || []);
     } catch (err) {
       if (err.name === 'AbortError') {
-        // request was aborted - do nothing
         return;
       }
       console.error('Generate error', err);
-      // Show an error "card" so user has visible feedback
       setRecipes([
         {
           id: 'error',
@@ -73,80 +70,149 @@ export default function Home() {
   }
 
   function handleSave(recipe) {
-    // simple localStorage save (guest fallback)
     try {
       const saved = JSON.parse(localStorage.getItem('savedRecipes') || '[]');
       if (!saved.find((r) => r.id === recipe.id)) {
         saved.unshift(recipe);
         localStorage.setItem('savedRecipes', JSON.stringify(saved));
-        // simple feedback — replace later with toasts
-        alert('Saved to device. Sign in to sync across devices.');
+        toast('Saved to device. Sign in to sync across devices.');
       } else {
-        alert('Already saved');
+        toast('Already saved');
       }
     } catch (e) {
       console.error('Save error', e);
-      alert('Could not save recipe locally.');
+      toast('Could not save recipe locally.');
     }
   }
 
   async function handleRegenerate(recipe) {
-    // Regenerate using last prompt (or recipe.prompt if available)
     await generate(lastPrompt || recipe.prompt || '');
   }
 
+  // tiny toast fallback (non-blocking)
+  function toast(msg) {
+    const el = document.createElement('div');
+    el.innerText = msg;
+    el.className =
+      'fixed bottom-6 right-6 z-50 rounded-md px-4 py-2 shadow-lg bg-white border text-sm';
+    document.body.appendChild(el);
+    setTimeout(() => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(6px)';
+    }, 2200);
+    setTimeout(() => document.body.removeChild(el), 2800);
+  }
+
   return (
-    <main className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 p-6 md:p-10">
-      <div className="max-w-6xl mx-auto">
-        {/* Top area: logo + original welcome + sign in */}
+    <main className="min-h-screen bg-linear-to-b from-[#f7fbff] via-[#f3faf8] to-[#fff7fb] py-10 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-linear-to-br from-brand-500 to-brand-300 flex items-center justify-center text-white font-bold text-lg">A</div>
+            <div
+              aria-hidden
+              className="w-14 h-14 rounded-2xl bg-clip-padding bg-linear-to-br from-[#6d28d9] via-[#06b6d4] to-[#10b981] flex items-center justify-center text-white font-extrabold text-xl shadow-2xl"
+            >
+              A
+            </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">AI Recipe Recommender</h1>
-              <p className="text-sm text-gray-600">Discover new recipes tailored to your preferences.</p>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-[#0f172a] leading-tight">
+                AI Recipe Recommender
+              </h1>
+              <p className="text-sm text-[#334155] mt-1">
+                Fresh recipe ideas tailored to what you have and how you want to cook.
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => window.location.href = '/FileUpload'}
-              className="text-sm bg-gray-900 text-white px-4 py-2 rounded-md hover:opacity-95 transition"
+              onClick={() => (window.location.href = '/FileUpload')}
+              className="inline-flex items-center gap-2 bg-linear-to-r from-[#ff6b6b] to-[#f59e0b] text-white px-4 py-2 rounded-lg shadow-lg hover:scale-[1.02] transition-transform"
+              title="Upload files / images to guide generation"
             >
               Get Started
+              <svg className="w-4 h-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 3v12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
-            <button className="text-sm px-3 py-2 rounded-md hover:bg-gray-100">Sign in</button>
+
+            <button
+              className="px-3 py-2 rounded-lg hover:bg-white/60 transition text-sm border border-transparent bg-white/50 backdrop-blur"
+              onClick={() => toast('Sign-in not yet implemented in demo')}
+            >
+              Sign in
+            </button>
           </div>
         </header>
 
-        {/* Intro / hero area (keeps your welcome text integrated) */}
-        <section className="rounded-xl p-6 md:p-10 mb-8 hero-gradient">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl md:text-4xl font-semibold text-white mb-2">Welcome to the Recipe Recommender</h2>
-            <p className="text-sm text-white/90 mb-6">
-              Discover new recipes tailored to your preferences — type ingredients, dietary hints, or a cooking goal and press Generate.
+        {/* Hero */}
+        <section className="rounded-2xl p-6 md:p-10 mb-8 relative overflow-hidden shadow-xl bg-white/80 backdrop-blur-sm">
+          {/* decorative gradients */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-8 -top-16 w-80 h-80 rounded-full blur-3xl opacity-70 bg-linear-to-tr from-[#7c3aed] to-[#06b6d4] animate-slow-float"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -left-20 -bottom-8 w-64 h-64 rounded-full blur-2xl opacity-60 bg-linear-to-br from-[#fb7185] to-[#f59e0b] animate-slow-float animation-delay-2500"
+          />
+
+          <div className="relative z-10 max-w-3xl">
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#0f172a] mb-2">
+              Discover recipes you'll love
+            </h2>
+            <p className="text-sm text-[#334155] mb-6">
+              Type ingredients, dietary preferences or a goal (e.g., "high-protein vegan dinner") and hit Generate.
             </p>
 
-            {/* HeroSearch component (large prompt input + examples) */}
-            <HeroSearch
-              onGenerate={generate}
-              examples={[
-                'Vegan 20-min dinner for 2',
-                'Chicken + broccoli — low-carb dinner',
-                'Gluten-free breakfast with oats',
-              ]}
-            />
+            <div className="space-y-4">
+              <HeroSearch
+                onGenerate={generate}
+                examples={[
+                  'Vegan 20-min dinner for 2',
+                  'Chicken + broccoli — low-carb dinner',
+                  'Gluten-free breakfast with oats',
+                ]}
+              />
+
+              {/* progress bar */}
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-[#475569]">
+                  {loading ? 'Generating suggestions…' : 'Ready to generate'}
+                </div>
+
+                <div
+                  aria-hidden={!loading}
+                  className={`w-40 h-2 rounded-full bg-[#e6eef6] overflow-hidden ${loading ? 'shadow-inner' : ''}`}
+                >
+                  <div
+                    className={`h-2 rounded-full transform transition-all ${loading ? 'w-full animate-loading-bar' : 'w-0'}`}
+                    style={{ background: 'linear-gradient(90deg,#ff6b6b,#f59e0b,#06b6d4)' }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ARIA live region for screen readers */}
+        {/* ARIA live region */}
         <div aria-live="polite" className="sr-only" ref={resultsAnnounceRef} />
 
         {/* Results */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">{loading ? 'Generating recipes…' : (recipes.length ? 'Results' : 'Try a prompt to generate recipes')}</h3>
-            {lastPrompt && <div className="text-sm text-gray-500">Last prompt: <span className="font-medium text-gray-700">{lastPrompt}</span></div>}
+            <h3 className="text-lg font-semibold text-[#0f172a]">
+              {loading ? 'Generating recipes…' : recipes.length ? 'Results' : 'Try a prompt to generate recipes'}
+            </h3>
+
+            {lastPrompt && (
+              <div className="text-sm text-[#475569] truncate max-w-xs">
+                Last prompt:&nbsp;
+                <span className="font-medium text-[#0f172a]">{lastPrompt}</span>
+              </div>
+            )}
           </div>
 
           <RecipeGrid
@@ -155,8 +221,16 @@ export default function Home() {
             onOpen={(id) => {
               const r = recipes.find((x) => x.id === id);
               if (r) {
-                // basic modal/alert for demo — replace with actual modal/page in future
-                alert(`${r.title}\n\nIngredients:\n${(r.ingredients || []).join('\n')}\n\nSteps:\n${(r.steps || []).join('\n\n')}`);
+                const bodyLines = [
+                  `Title: ${r.title || '—'}`,
+                  '',
+                  'Ingredients:',
+                  ...(r.ingredients || []),
+                  '',
+                  'Steps:',
+                  ...(r.steps || []),
+                ];
+                alert(bodyLines.join('\n'));
               }
             }}
             onSave={handleSave}
@@ -164,27 +238,64 @@ export default function Home() {
           />
         </section>
 
-        {/* Footer / saved recipes quick access */}
-        <footer className="pt-8 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600">Built with ❤ — try prompts like "quick dinner for 1" or "high protein lunch".</p>
-            <button
-              onClick={() => {
-                const saved = JSON.parse(localStorage.getItem('savedRecipes') || '[]');
-                if (!saved.length) {
-                  alert('No saved recipes on this device yet.');
-                  return;
-                }
-                // show titles quickly
-                alert('Saved recipes:\n\n' + saved.map((s) => `- ${s.title}`).join('\n'));
-              }}
-              className="text-sm px-3 py-1 rounded-md bg-white border hover:bg-gray-50"
-            >
-              View saved (local)
-            </button>
+        {/* Footer */}
+        <footer className="pt-6 border-t border-[#e6eef6]">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-[#475569]">
+              Built with ❤ — try prompts like "quick dinner for 1" or "high protein lunch".
+            </p>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  const saved = JSON.parse(localStorage.getItem('savedRecipes') || '[]');
+                  if (!saved.length) {
+                    toast('No saved recipes on this device yet.');
+                    return;
+                  }
+                  toast(`Saved: ${saved.slice(0, 3).map((s) => s.title).join(', ')}`);
+                }}
+                className="text-sm px-3 py-1 rounded-md bg-white border hover:shadow transition"
+              >
+                View saved (local)
+              </button>
+
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  toast('Help: Enter ingredients or choose an example and click "Generate".');
+                }}
+                className="text-sm text-[#475569] hover:underline"
+              >
+                Help
+              </a>
+            </div>
           </div>
         </footer>
       </div>
+
+      {/* local styles for demo — move to globals.css for production */}
+      <style>{`
+        @keyframes slowFloat {
+          0% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-12px) rotate(4deg); }
+          100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-slow-float { animation: slowFloat 9s ease-in-out infinite; }
+        .animation-delay-2500 { animation-delay: 2.5s; }
+
+        @keyframes loadingBar {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(-20%); }
+          100% { transform: translateX(0%); }
+        }
+        .animate-loading-bar { animation: loadingBar 1.2s linear infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .animate-slow-float, .animate-loading-bar { animation: none !important; }
+        }
+      `}</style>
     </main>
   );
 }

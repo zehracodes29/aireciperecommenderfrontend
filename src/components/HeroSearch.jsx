@@ -1,4 +1,3 @@
-// src/components/HeroSearch.jsx
 'use client';
 
 import { useState } from 'react';
