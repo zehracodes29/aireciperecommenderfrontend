@@ -104,22 +104,23 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-linear-to-b from-[#f7fbff] via-[#f3faf8] to-[#fff7fb] py-10 px-4">
+    //i want to style the page into mint green and light colors
+    <main className="min-h-screen bg-linear-to-br from-emerald-400 via-teal-400 to-cyan-500 py-10 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
           <div className="flex items-center gap-4">
             <div
               aria-hidden
-              className="w-14 h-14 rounded-2xl bg-clip-padding bg-linear-to-br from-[#6d28d9] via-[#06b6d4] to-[#10b981] flex items-center justify-center text-white font-extrabold text-xl shadow-2xl"
+              className="w-14 h-14 rounded-2xl bg-linear-to-br from-emerald-600 to-teal-500 flex items-center justify-center text-white font-extrabold text-xl shadow-2xl"
             >
               A
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-[#0f172a] leading-tight">
+              <h1 className="text-2xl md:text-3xl font-extrabold text-white drop-shadow-lg leading-tight">
                 AI Recipe Recommender
               </h1>
-              <p className="text-sm text-[#334155] mt-1">
+              <p className="text-sm text-white drop-shadow-md mt-1">
                 Fresh recipe ideas tailored to what you have and how you want to cook.
               </p>
             </div>
@@ -128,7 +129,7 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => (window.location.href = '/FileUpload')}
-              className="inline-flex items-center gap-2 bg-linear-to-r from-[#ff6b6b] to-[#f59e0b] text-white px-4 py-2 rounded-lg shadow-lg hover:scale-[1.02] transition-transform"
+              className="inline-flex items-center gap-2 bg-linear-to-r from-emerald-600 to-teal-600 text-white px-4 py-2 rounded-lg shadow-lg hover:scale-[1.02] transition-transform font-semibold"
               title="Upload files / images to guide generation"
             >
               Get Started
@@ -139,7 +140,7 @@ export default function Home() {
             </button>
 
             <button
-              className="px-3 py-2 rounded-lg hover:bg-white/60 transition text-sm border border-transparent bg-white/50 backdrop-blur"
+              className="px-3 py-2 rounded-lg hover:bg-white/80 transition text-sm border border-white bg-white/70 backdrop-blur font-semibold text-emerald-600"
               onClick={() => toast('Sign-in not yet implemented in demo')}
             >
               Sign in
@@ -152,11 +153,11 @@ export default function Home() {
           {/* decorative gradients */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-8 -top-16 w-80 h-80 rounded-full blur-3xl opacity-70 bg-linear-to-tr from-[#7c3aed] to-[#06b6d4] animate-slow-float"
+            className="pointer-events-none absolute -right-8 -top-16 w-80 h-80 rounded-full blur-3xl opacity-70 bg-linear-to-tr from-[#9ad406] to-[#1ed406] animate-slow-float"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -left-20 -bottom-8 w-64 h-64 rounded-full blur-2xl opacity-60 bg-linear-to-br from-[#fb7185] to-[#f59e0b] animate-slow-float animation-delay-2500"
+            className="pointer-events-none absolute -left-20 -bottom-8 w-64 h-64 rounded-full blur-2xl opacity-60 bg-linear-to-br from-[#9ad406] to-[#1ed406] animate-slow-float animation-delay-2500"
           />
 
           <div className="relative z-10 max-w-3xl">

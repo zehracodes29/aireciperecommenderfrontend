@@ -61,24 +61,24 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-rose-50">
+    <div className="min-h-screen bg-linear-to-br from-emerald-400 via-teal-400 to-cyan-500">
       <div className="container mx-auto px-4 py-12">
         
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-800 mb-2">🍳 AI Recipe Generator</h1>
-          <p className="text-lg text-gray-600">Upload files or enter ingredients to create amazing recipes</p>
+          <h1 className="text-5xl font-bold text-white mb-2 drop-shadow-lg">🍳 AI Recipe Generator</h1>
+          <p className="text-lg text-white drop-shadow-md">Upload files or enter ingredients to create amazing recipes</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* File Upload Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-amber-200 hover:shadow-xl transition-shadow">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-orange-300 hover:shadow-lg transition-shadow hover:border-red-400">
+            <h2 className="text-2xl font-bold text-red-600 mb-6 flex items-center">
               <span className="text-3xl mr-2">📤</span> Upload Recipe File
             </h2>
             
-            <div className="border-3 border-dashed border-amber-300 rounded-xl p-8 mb-6 text-center hover:border-amber-500 transition-colors cursor-pointer bg-amber-50">
+            <div className="border-3 border-dashed border-orange-400 rounded-xl p-8 mb-6 text-center hover:border-pink-500 transition-colors cursor-pointer bg-orange-50 hover:bg-orange-100">
               <input 
                 type="file" 
                 onChange={handleFileChange}
@@ -90,13 +90,13 @@ const FileUpload = () => {
                 <p className="text-gray-700 font-semibold">
                   {file ? file.name : "Click or drag file here"}
                 </p>
-                <p className="text-gray-500 text-sm mt-1">Any file format supported</p>
+                <p className="text-gray-600 text-sm mt-1">Any file format supported</p>
               </label>
             </div>
 
             <button 
               onClick={handleUpload}
-              className="w-full bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 active:scale-95"
+              className="w-full bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-lg"
             >
               Upload File
             </button>
@@ -113,8 +113,8 @@ const FileUpload = () => {
           </div>
 
           {/* Recipe Generator Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-rose-200 hover:shadow-xl transition-shadow">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-pink-300 hover:shadow-lg transition-shadow hover:border-red-400">
+            <h2 className="text-2xl font-bold text-red-600 mb-6 flex items-center">
               <span className="text-3xl mr-2">✨</span> Generate Recipe
             </h2>
             
@@ -123,13 +123,13 @@ const FileUpload = () => {
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
               rows={5}
-              className="w-full p-4 border-2 border-rose-300 rounded-lg focus:border-rose-500 focus:outline-none resize-none font-medium text-gray-700 placeholder-gray-400"
+              className="w-full p-4 border-2 border-orange-400 rounded-lg focus:border-red-500 focus:outline-none resize-none font-medium text-gray-800 placeholder-gray-500 bg-orange-50"
             />
 
             <button 
               onClick={handleGenerateRecipe}
               disabled={loading}
-              className="w-full mt-6 bg-linear-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 disabled:from-gray-400 disabled:to-gray-400 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
+              className="w-full mt-6 bg-linear-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 disabled:from-gray-400 disabled:to-gray-400 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 active:scale-95 disabled:cursor-not-allowed shadow-lg"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -144,8 +144,8 @@ const FileUpload = () => {
 
         {/* Recipe Display Card */}
         {recipe && (
-          <div className="mt-12 bg-white rounded-2xl shadow-lg p-8 border-2 border-amber-200 animate-fadeIn">
-            <h3 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+          <div className="mt-12 bg-white rounded-2xl shadow-2xl p-8 border-2 border-orange-300 animate-fadeIn">
+            <h3 className="text-3xl font-bold text-red-600 mb-6 flex items-center">
               <span className="text-4xl mr-2">🍽️</span> Your Generated Recipe
             </h3>
             <style>{`
@@ -155,7 +155,7 @@ const FileUpload = () => {
               .recipe-content h4,
               .recipe-content h5,
               .recipe-content h6 {
-                color: #1f2937 !important;
+                color: #dc2626 !important;
                 font-weight: 700 !important;
                 margin-top: 1.5rem !important;
                 margin-bottom: 1rem !important;
@@ -182,13 +182,13 @@ const FileUpload = () => {
               }
               .recipe-content strong {
                 font-weight: 700 !important;
-                color: #1f2937 !important;
+                color: #dc2626 !important;
               }
               .recipe-content em {
                 font-style: italic !important;
               }
             `}</style>
-            <div className="recipe-content bg-linear-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200 whitespace-pre-wrap">
+            <div className="recipe-content bg-linear-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200 whitespace-pre-wrap">
               <MarkdownPreview 
                 source={recipe} 
                 style={{ 
