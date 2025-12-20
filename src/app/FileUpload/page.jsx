@@ -44,7 +44,7 @@ const FileUpload = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/generate-recipe", {
+      const res = await fetch("/api/recipe-generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ingredients: ingredients.split(",").map(i => i.trim()) }),
@@ -148,13 +148,55 @@ const FileUpload = () => {
             <h3 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
               <span className="text-4xl mr-2">🍽️</span> Your Generated Recipe
             </h3>
-            <div className="bg-linear-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
+            <style>{`
+              .recipe-content h1,
+              .recipe-content h2,
+              .recipe-content h3,
+              .recipe-content h4,
+              .recipe-content h5,
+              .recipe-content h6 {
+                color: #1f2937 !important;
+                font-weight: 700 !important;
+                margin-top: 1.5rem !important;
+                margin-bottom: 1rem !important;
+              }
+              .recipe-content h1 { font-size: 1.875rem !important; }
+              .recipe-content h2 { font-size: 1.5rem !important; }
+              .recipe-content h3 { font-size: 1.25rem !important; }
+              .recipe-content p {
+                margin-bottom: 0.5rem !important;
+                line-height: 1.8 !important;
+                color: #374151 !important;
+              }
+              .recipe-content ul,
+              .recipe-content ol {
+                margin-left: 1.5rem !important;
+                margin-bottom: 1rem !important;
+                margin-top: 0.5rem !important;
+              }
+              .recipe-content li {
+                margin-bottom: 0.75rem !important;
+                line-height: 1.8 !important;
+                color: #374151 !important;
+                padding-left: 0.5rem !important;
+              }
+              .recipe-content strong {
+                font-weight: 700 !important;
+                color: #1f2937 !important;
+              }
+              .recipe-content em {
+                font-style: italic !important;
+              }
+            `}</style>
+            <div className="recipe-content bg-linear-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200 whitespace-pre-wrap">
               <MarkdownPreview 
                 source={recipe} 
                 style={{ 
                   padding: 0,
                   backgroundColor: "transparent",
-                  color: "#333"
+                  color: "#333",
+                  fontFamily: "inherit",
+                  lineHeight: "1.6"
                 }} 
               />
             </div>
