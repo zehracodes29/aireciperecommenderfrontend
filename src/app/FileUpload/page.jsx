@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import MarkdownPreview from '@uiw/react-markdown-preview';
+const API_BASE = "http://localhost:5000";
+
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
